@@ -97,7 +97,7 @@ def kmeans(features,centroids):
     return centroids,labels,counter
 
 
-def runkmeans():
+def main():
     names,features = read_data()
 
     # number of clusters
@@ -137,3 +137,5 @@ def runkmeans():
         for j in range(len(names)):
             if labels[j] == i:
                 print(f"{labels[j]} : {names[j]}")
+
+main()
