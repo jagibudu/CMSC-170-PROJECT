@@ -152,12 +152,20 @@ def standardize_data(X):
 
     return standardized, means, stds
 
+
 # call this function so all 3 methods use the same samples and features
-# returns (region, province) names, raw features (tons), standardized features, means, stds
+# returns:
+#   names: list of (region, province), e.g.
+#          [('CORDILLERA ADMINISTRATIVE REGION (CAR)', 'Abra'),
+#           ('CORDILLERA ADMINISTRATIVE REGION (CAR)', 'Apayao'), ...]
+#   X: feature matrix before standardizing, average tons per year
+#      one row per province: [irrigated palay, rainfed palay, white corn, yellow corn]
+#   Z: feature matrix after standardizing (this is what the methods will use)
+# row i of X and Z belongs to names[i]
 def get_data(filepath="data/dataset.csv"):
     time_columns, records = load_data(filepath)
     records = clean_records(records)
     averages = average_of_all_years(records)
     names, X, excluded = prepare_feature_matrix(averages)
     Z, means, stds = standardize_data(X)
-    return names, X, Z, means, stds
+    return names, X, Z
