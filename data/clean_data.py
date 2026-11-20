@@ -1,5 +1,7 @@
-import numpy as np
-from preprocess import load_data, average_of_all_years
+from data.preprocess import load_data, average_of_all_years
+
+# only the 4 base crops, "Palay" and "Corn" are just sums of these
+FEATURE_CROPS = ["Irrigated Palay", "Rainfed Palay", "White Corn", "Yellow Corn"]
 
 # keep only the province or city, removes the national and region rows
 def keep_places(records):
@@ -44,7 +46,7 @@ def join_negros(records):
         # only the old Negros rows have a matching NIR row, the rest pass unchanged
         key = (record["crop"], record["location"])
         if key in nir_rows:
-             # old row up to 2023 Q4 + NIR row from 2024 Q1 = full 144 quarters
+            # old row up to 2023 Q4 + NIR row from 2024 Q1 = full 144 quarters, 136 is the index of 2024 Q1
             # this also replaces the stray 0.0 in the old row's 2025 Q1
             new_values = record["values"][:136] + nir_rows[key]["values"][136:]
             record = dict(record)
@@ -52,3 +54,99 @@ def join_negros(records):
         joined.append(record)
     return joined
 
+# It returns the cleaned records
+# add more cleaning functions here if yall find other data issues
+def clean_records(records):
+    records = keep_places(records)
+    records = drop_empty(records)
+    records = join_negros(records)
+    return records
+
+
+# copied from hierarchical.py file
+# Prepare province-level feature matrix
+def prepare_feature_matrix(averages):
+    province_data = {}
+
+    for record in averages:
+        if record["geo_level"] != "Province":
+            continue
+
+        crop = record["crop"]
+
+        if crop not in FEATURE_CROPS:
+            continue
+
+        province = record["location"]
+        region = record["region"]
+        value = record["average_yearly"]
+
+        key = (region, province)
+
+        if key not in province_data:
+            province_data[key] = {}
+
+        province_data[key][crop] = value
+
+    province_names = []
+    X = []
+    excluded = []
+
+    for key, crops in province_data.items():
+        if any(
+            crop not in crops or crops[crop] is None
+            for crop in FEATURE_CROPS
+        ):
+            excluded.append(key)
+            continue
+
+        province_names.append(key)
+
+        row = [
+            crops[crop]
+            for crop in FEATURE_CROPS
+        ]
+
+        X.append(row)
+
+    return province_names, X, excluded
+
+# Standardize data using Z-score
+def standardize_data(X):
+    if not X:
+        raise ValueError("Feature matrix is empty.")
+
+    num_rows = len(X)
+    num_features = len(X[0])
+
+    means = []
+    stds = []
+
+    for j in range(num_features):
+        mean = sum(X[i][j] for i in range(num_rows)) / num_rows
+
+        variance = sum(
+            (X[i][j] - mean) ** 2
+            for i in range(num_rows)
+        ) / num_rows
+
+        std = variance ** 0.5
+
+        means.append(mean)
+        stds.append(std)
+
+    standardized = []
+
+    for row in X:
+        new_row = []
+
+        for j in range(num_features):
+            if stds[j] == 0:
+                new_row.append(0.0)
+            else:
+                new_value = (row[j] - means[j]) / stds[j]
+                new_row.append(new_value)
+
+        standardized.append(new_row)
+
+    return standardized, means, stds
