@@ -111,6 +111,7 @@ def prepare_feature_matrix(averages):
 
     return province_names, X, excluded
 
+# copied from hierarchical.py file
 # Standardize data using Z-score
 def standardize_data(X):
     if not X:
@@ -150,3 +151,13 @@ def standardize_data(X):
         standardized.append(new_row)
 
     return standardized, means, stds
+
+# call this function so all 3 methods use the same samples and features
+# returns (region, province) names, raw features (tons), standardized features, means, stds
+def get_data(filepath="data/dataset.csv"):
+    time_columns, records = load_data(filepath)
+    records = clean_records(records)
+    averages = average_of_all_years(records)
+    names, X, excluded = prepare_feature_matrix(averages)
+    Z, means, stds = standardize_data(X)
+    return names, X, Z, means, stds
