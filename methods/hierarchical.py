@@ -1,5 +1,4 @@
-from data.preprocess import load_data, average_of_all_years
-
+from data.clean_data import get_data
 
 FEATURE_CROPS = [
     "Irrigated Palay",
@@ -7,95 +6,6 @@ FEATURE_CROPS = [
     "White Corn",
     "Yellow Corn"
 ]
-
-
-# Prepare province-level feature matrix
-def prepare_feature_matrix(averages):
-    province_data = {}
-
-    for record in averages:
-        if record["geo_level"] != "Province":
-            continue
-
-        crop = record["crop"]
-
-        if crop not in FEATURE_CROPS:
-            continue
-
-        province = record["location"]
-        region = record["region"]
-        value = record["average_yearly"]
-
-        key = (region, province)
-
-        if key not in province_data:
-            province_data[key] = {}
-
-        province_data[key][crop] = value
-
-    province_names = []
-    X = []
-    excluded = []
-
-    for key, crops in province_data.items():
-        if any(
-            crop not in crops or crops[crop] is None
-            for crop in FEATURE_CROPS
-        ):
-            excluded.append(key)
-            continue
-
-        province_names.append(key)
-
-        row = [
-            crops[crop]
-            for crop in FEATURE_CROPS
-        ]
-
-        X.append(row)
-
-    return province_names, X, excluded
-
-
-# Standardize data using Z-score
-def standardize_data(X):
-    if not X:
-        raise ValueError("Feature matrix is empty.")
-
-    num_rows = len(X)
-    num_features = len(X[0])
-
-    means = []
-    stds = []
-
-    for j in range(num_features):
-        mean = sum(X[i][j] for i in range(num_rows)) / num_rows
-
-        variance = sum(
-            (X[i][j] - mean) ** 2
-            for i in range(num_rows)
-        ) / num_rows
-
-        std = variance ** 0.5
-
-        means.append(mean)
-        stds.append(std)
-
-    standardized = []
-
-    for row in X:
-        new_row = []
-
-        for j in range(num_features):
-            if stds[j] == 0:
-                new_row.append(0.0)
-            else:
-                new_value = (row[j] - means[j]) / stds[j]
-                new_row.append(new_value)
-
-        standardized.append(new_row)
-
-    return standardized, means, stds
 
 
 # Calculate Euclidean distance
@@ -189,22 +99,13 @@ def get_labels(clusters, num_samples):
 
 
 # Run hierarchical clustering
-def run_hierarchical_clustering(filepath="data/dataset.csv", n_clusters=3):
+def run_hierarchicalClustering(filepath="data/dataset.csv", n_clusters=3):
 
-    # Load the dataset
-    time_columns, records = load_data(filepath)
+    # Get data from the shared preprocessing pipeline
+    province_names, X, X_scaled = get_data(filepath)
 
-    # Calculate average yearly production
-    averages = average_of_all_years(records)
-
-    # Prepare province-level features
-    province_names, X, excluded = prepare_feature_matrix(averages)
-
-    if len(X) < n_clusters:
+    if len(X_scaled) < n_clusters:
         raise ValueError("Not enough complete provinces.")
-
-    # Standardize the features
-    X_scaled, means, stds = standardize_data(X)
 
     # Perform clustering
     clusters, merge_history = agglomerative_clustering(
@@ -220,7 +121,6 @@ def run_hierarchical_clustering(filepath="data/dataset.csv", n_clusters=3):
     print("Features:", FEATURE_CROPS)
 
     print("\nNumber of provinces:", len(province_names))
-    print("Number of excluded provinces:", len(excluded))
     print("Number of clusters:", n_clusters)
 
     print("\nCluster Assignments:")
@@ -248,10 +148,9 @@ def run_hierarchical_clustering(filepath="data/dataset.csv", n_clusters=3):
         "standardized_features": X_scaled,
         "labels": labels,
         "clusters": clusters,
-        "merge_history": merge_history,
-        "excluded": excluded
+        "merge_history": merge_history
     }
 
 
 # Run the clustering algorithm
-run_hierarchical_clustering("data/dataset.csv", 3)
+run_hierarchicalClustering("data/dataset.csv", 3)
