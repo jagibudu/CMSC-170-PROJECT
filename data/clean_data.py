@@ -3,27 +3,7 @@ from data.preprocess import load_data, average_of_all_years
 # only the 4 base crops, "Palay" and "Corn" are just sums of these
 FEATURE_CROPS = ["Irrigated Palay", "Rainfed Palay", "White Corn", "Yellow Corn"]
 
-# keep only the province or city, removes the national and region rows
-def keep_places(records):
-    places = []
-    for record in records:
-        if record["geo_level"] == "Province" or record["geo_level"] == "City":
-            places.append(record)
-    return places
 
-# Removes records where all values are None, meaning there is no data for that record.
-def drop_empty(records):
-    with_data = []
-    for record in records:
-        # check if the record has at least one real value
-        has_value = False
-        for val in record["values"]:
-            if val is not None:
-                has_value = True
-                break
-        if has_value:
-            with_data.append(record)
-    return with_data
 
 # joins Negros Occidental, Negros Oriental and Siquijor back into one series each
 # without this, each of the 3 provinces shows up twice (Region VI / VII row and NIR row)
@@ -57,8 +37,6 @@ def join_negros(records):
 # It returns the cleaned records
 # add more cleaning functions here if yall find other data issues
 def clean_records(records):
-    records = keep_places(records)
-    records = drop_empty(records)
     records = join_negros(records)
     return records
 
