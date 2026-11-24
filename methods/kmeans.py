@@ -92,6 +92,9 @@ def runkmeans():
     # number of clusters
     k = 3
 
+    # add a seed so the results can be reproducible
+    random.seed(10)
+
     # k random features as the initial centroids
     initial_centroids = random.sample(features,k)
 
@@ -136,3 +139,5 @@ def runkmeans():
             if labels[j] == i:
                 region, province = names[j]
                 print(f"{labels[j]} : {province} ({region})")
+    
+    return labels
