@@ -1,0 +1,110 @@
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  background-color: #faf7ef;
+  color: #2f2c25;
+  line-height: 1.7;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/*Page layout*/
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 48px 20px;
+    }
+
+    .card {
+        background-color: white;
+        border: 1px solid #ece6d6;
+        border-radius: 12px;
+        padding: 36px;
+        margin-bottom: 24px;
+    }
+
+    h1, h2 {
+        font-family: 'Lora', serif;
+        color: #3f6b2a;
+    }
+
+    .label {
+        color: #6b4f34;
+        font-weight: 600;
+    }
+
+    .card h2 {
+        font-size: 28px;
+        margin: 0 0 10px 0;
+    }
+
+    .card h3 {
+        color: #6b4f34;
+        font-size: 19px;
+        margin: 24px 0 6px 0;
+    }
+
+    .card p {
+        margin: 8px 0;
+        text-align: justify;
+    }
+/*End of Page layout*/
+
+/*Title section*/
+    .titlecard {
+        text-align: center;
+        border-top: 6px solid #3f6b2a;
+    }
+
+    .titlecard h1 {
+        font-size: 36px;
+        line-height: 1.3;
+        margin: 0;
+    }
+
+    .divider {
+        width: 60px;
+        height: 4px;
+        background-color: #d9a62e;
+        border-radius: 2px;
+        margin: 20px auto;
+    }
+
+    .titlecard p {
+        text-align: center;
+    }
+
+    .group {
+        font-size: 18px;
+        margin: 0 0 16px 0;
+    }
+
+    .members {
+        list-style: none;
+        padding: 0;
+        margin: 8px 0 0 0;
+    }
+
+    .members li {
+        padding: 2px 0;
+    }
+/*End of Title section*/
+
+/*Dataset section*/
+    .card a {
+        color: #3f6b2a;
+        font-weight: 600;
+    }
+
+    .card ol {
+        margin: 8px 0;
+        padding-left: 22px;
+    }
+
+    .card ol li {
+        margin-bottom: 6px;
+    }
+/*End of Dataset section*/
