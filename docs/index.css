@@ -166,3 +166,36 @@ html {
         }
     }
 /*End of Methods and Evaluation Metrics cards*/
+
+
+
+
+
+
+/*References and Links section*/
+    .references {
+        margin: 8px 0;
+        padding-left: 22px;
+    }
+
+    .references li {
+        font-size: 15px;
+        margin-bottom: 8px;
+        overflow-wrap: anywhere;
+    }
+
+    .links {
+        list-style: none;
+        padding: 0;
+        margin: 8px 0;
+    }
+
+    .links li {
+        margin-bottom: 8px;
+    }
+
+    .links .label {
+        display: inline-block;
+        width: 170px;
+    }
+/*End of References and Links section*/
