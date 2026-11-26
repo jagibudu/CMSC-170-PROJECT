@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Clustering Philippine Provinces by Palay and Corn Production</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="container">
+
+    <!-- Title and group members -->
+    <section class="card titlecard">
+        <h1>Clustering Philippine Provinces by Palay and Corn Production</h1>
+        <div class="divider"></div>
+        <p class="group"><span class="label">Group:</span> Mga Alipin ng 170</p>
+        <p class="label">Members</p>
+        <ul class="members">
+            <li>Kevin Aaron A. Salazar</li>
+            <li>Jason Gian B. Duran</li>
+            <li>Ron Kirby M. Arches</li>
+            <li>Carlos James R. Miranda</li>
+        </ul>
+    </section>
+
+ <!-- Problem statement and motivation section -->
+    <section class="card">
+        <h2>Problem Statement and Motivation</h2>
+
+        <h3>Problem Statement</h3>
+        <p>Palay and corn are grown in almost every province in the Philippines, but the amount each province produces varies 
+            a lot. Some provinces produce more palay while some provinces produce more corn. In this project, we aim to group 
+            Philippine provinces to discover the natural groupings of Philippine provinces based on their palay and corn production. 
+        </p>
+
+        <h3>Motivation</h3>
+        <p>Agriculture plays a big role in the Philippines, as about 43% of the country's land is agricultural. 
+            It employs about 1 in 5 Filipino workers (20.7% as of December 2025). Palay and corn make up 27% of the country's total crop output. 
+            In 2025 alone, the country produced 19.68 million metric tons of palay, while corn production reaches about 8.3 million metric tons each year. 
+            Grouping provinces with similar palay and corn production can help us identify which provinces are major rice producers and which ones are major corn producers.
+        </p>
+    </section>
+
+     <!-- Dataset section -->
+    <section class="card">
+        <h2>Dataset</h2>
+
+        <p><span class="label">Dataset:</span> Palay and Corn: Volume of Production in Metric Tons by Ecosystem/Croptype, Quarter, Semester, Region and Province, 1987–2026 from the PSA Statistical Database.</p>
+        <p><span class="label">Source:</span> <a href="https://openstat.psa.gov.ph/" target="_blank">PSA Statistical Database</a></p>
+
+        <h3>Size and Features</h3>
+        <p>We used the data from 1990 to 2025, which is 144 quarters. After preprocessing, the dataset has 82 samples (provinces).<br>
+            Features (averages of all the years):<br>
+            - Irrigated Palay<br>
+            - Rainfed Palay<br>
+            - White Corn<br>
+            - Yellow Corn
+        </p>
+
+       <h3>Preprocessing</h3>
+        <ol>
+            <li>Kept only the data from 1990 to 2025.</li>
+            <li>Joined Negros Occidental, Negros Oriental, and Siquijor, which moved to the Negros Island Region in 2024.</li>
+            <li>Computed the average yearly production of each crop for every province.</li>
+            <li>Kept only the provinces and the four base crops.</li>
+            <li>Dropped the provinces with unusable data.</li>
+            <li>Standardized the features using z-scores.</li>
+        </ol>
+    </section>
+
+        <!-- Methods section -->
+    <section class="card">
+        <h2>Methods</h2>
+        <p>We only used clustering methods so that all three solve the same task and can be compared fairly.
+            All methods were coded from scratch in Python and each method uses the same feature matrix.
+        </p>
+
+
+    </div>
+</body>
+</html>
