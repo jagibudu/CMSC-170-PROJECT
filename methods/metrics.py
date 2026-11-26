@@ -56,3 +56,78 @@ def calinski_harabasz(Z, labels):
         W += euclidean(Z[i], centroids[labels[i]]) ** 2
 
     return (B/(k - 1)) / (W/(n - k))
+
+
+
+ 
+def silhouette_score(X, labels):
+    n = len(X)  # Number of data points (provinces)
+
+    # Get all unique cluster labels
+    clusters = sorted(set(labels))
+
+    # requires at least 2 clusters, but fewer clusters than data points
+    if len(clusters) < 2 or len(clusters) >= n:
+        raise ValueError("Invalid number of clusters.")
+
+    # Sum of silhouette scores for all provinces
+    total_score = 0  
+
+    # Calculate silhouette score for each province
+    for i in range(n):
+        own_cluster = labels[i]  # Cluster where the current province belongs
+
+  
+        # Calculate a(i)
+        same_distances = []
+
+        for j in range(n):
+            # Skip the current province and only consider provinces in the same cluster
+            if labels[j] == own_cluster and i != j:
+                distance = euclidean(X[i], X[j])  # Calculate Euclidean distance
+                same_distances.append(distance)
+
+        # If the province is alone in its cluster (singleton cluster),
+        # its silhouette score is defined as 0
+        if len(same_distances) == 0:
+            continue
+
+        # Compute the average distance within the same cluster
+        a = sum(same_distances) / len(same_distances)
+
+        # Calculate b(i)
+        b = float("inf")  # Initialize b to infinity so any actual distance is smaller
+
+        for cluster in clusters:
+            # Ignore the province's own cluster
+            if cluster == own_cluster:
+                continue
+
+            other_distances = []  # Distances to provinces in another cluster
+
+            for j in range(n):
+                # Get distances only to provinces belonging to this other cluster
+                if labels[j] == cluster:
+                    distance = euclidean(X[i], X[j])
+                    other_distances.append(distance)
+
+            # Calculate the average distance to this other cluster
+            average_distance = sum(other_distances) / len(other_distances)
+
+            # Keep the smallest average distance (nearest neighboring cluster)
+            if average_distance < b:
+                b = average_distance
+
+        # Calculate silhouette score
+
+        # Prevent division by zero if both distances are zero
+        if max(a, b) == 0:
+            score = 0
+        else:
+            score = (b - a) / max(a, b)
+
+        # Add the current province's score to the total
+        total_score += score
+
+    # Return the average silhouette score of all provinces
+    return total_score / n
