@@ -30,7 +30,7 @@
 
         <h3>Problem Statement</h3>
         <p>Palay and corn are grown in almost every province in the Philippines, but the amount each province produces varies 
-            a lot. Some provinces produce more palay while some provinces produce more corn. In this project, we aim to group 
+            a lot. Some provinces produce more palay while others produce more corn. In this project, we aim to group 
             Philippine provinces to discover the natural groupings of Philippine provinces based on their palay and corn production. 
         </p>
 
@@ -75,7 +75,70 @@
         <p>We only used clustering methods so that all three solve the same task and can be compared fairly.
             All methods were coded from scratch in Python and each method uses the same feature matrix.
         </p>
+         <div class="methodcontainer">
+            <div class="methodinfo kmeans">
+                <h3>K-Means Clustering</h3>
+                <ul>
+                    <li>assigns each point to the nearest cluster center (centroid), then updates the centroids until they no longer change</li>
+                    <li>our code picks k random points as the starting centroids and uses Euclidean distance</li>
+                </ul>
+            </div>
+            <div class="methodinfo hierarchical">
+                <h3>Hierarchical Clustering</h3>
+                <ul>
+                
+                </ul>
+            </div>
 
+            <div class="methodinfo gmm">
+                <h3>Gaussian Mixture Model (GMM)</h3>
+                <ul>
+                  
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experimental setup section -->
+    <section class="card">
+        <h2>Experimental Setup</h2>
+
+        <h3>Data Split</h3>
+        <p>This project does not split the data into training and testing sets. 
+            Clustering is an unsupervised task: there are no correct labels to predict, 
+            so there is nothing to hold out and test against.
+        </p>
+
+        <h3>Evaluation Metrics</h3>
+        <div class="methodcontainer twocolumn">
+            <div class="methodinfo">
+                <div class="formula">s(i) = (b(i) &minus; a(i)) / max{a(i), b(i)}</div>
+                <h3>Silhouette Score</h3>
+                <ul>
+                    <li>measures how similar a point is to its own cluster compared to other clusters</li>
+                    <li>a(i) is the mean distance from point i to all other points in its cluster, and b(i) is the smallest mean distance from i to the points of any other cluster</li>
+                    <li>ranges from -1 to 1, higher is better, the overall score is the mean s(i) of all points, and it is used to choose k</li>
+                </ul>
+            </div>
+
+            <div class="methodinfo hierarchical">
+                <div class="formula">
+                    CH = [BCSS / (k &minus; 1)] / [WCSS / (n &minus; k)]<br>
+                    BCSS = &Sigma; n<sub>i</sub> &#8214;c<sub>i</sub> &minus; c&#8214;&sup2;<br>
+                    WCSS = &Sigma; &Sigma;<sub>x &isin; C<sub>i</sub></sub> &#8214;x &minus; c<sub>i</sub>&#8214;&sup2;
+                </div>
+                <h3>Calinski-Harabasz Index</h3>
+                <ul>
+                    <li>measures the ratio of how spread out the clusters are from each other to how spread out the points are within each cluster</li>
+                    <li>BCSS (between cluster sum of squares) is the weighted sum of squared distances between each cluster centroid c<sub>i</sub> and the overall centroid c, where n<sub>i</sub> is the cluster's size, and WCSS (within cluster sum of squares) is the sum of squared distances between each point and its cluster centroid</li>
+                    <li>n is the number of points and k is the number of clusters, higher is better, and it is used to compare the methods</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Hyperparameters</h3>
+        <p>k = 3 for the two methods</p>
+    </section>
 
     </div>
 </body>

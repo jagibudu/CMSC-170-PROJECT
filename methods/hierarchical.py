@@ -152,5 +152,5 @@ def run_hierarchicalClustering(filepath="data/dataset.csv", n_clusters=3):
     }
 
 
-# Run the clustering algorithm
-run_hierarchicalClustering("data/dataset.csv", 3)
+if __name__ == "__main__":
+    run_hierarchicalClustering("data/dataset.csv", 3)
