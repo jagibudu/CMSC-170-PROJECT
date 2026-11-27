@@ -1,4 +1,5 @@
 from data.clean_data import get_data
+from methods.gmm import gaussian_mixture_model
 from methods.kmeans import runkmeans
 from methods.hierarchical import run_hierarchicalClustering
 from methods.metrics import calinski_harabasz
@@ -20,6 +21,8 @@ print("Calinski-Harabasz: ", ch_kmeans)
 
 print("Hierarchical")
 print("Calinski-Harabasz: ", ch_hierarchical)
+
+gaussian_mixture_model()
 
 # Plot the results (saved in figures/)
 plot_results(
