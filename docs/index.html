@@ -94,7 +94,10 @@
             <div class="methodinfo gmm">
                 <h3>Gaussian Mixture Model (GMM)</h3>
                 <ul>
-                  
+                  <li>Starts by choosing initial centroids to act as centers of clusters. Goes through K-Means first to get final centroids along with a predetermined label set. </li>
+                  <li>Expectation Step: Find the value density and value responsibility to reveal the possibility of each data point to belong to a respective cluster.</li>
+                  <li>Maximization Step: Update weights, mean vector, and covariance through the current responsibility value to improve the search for the true responsibility of each data point.</li>
+                  <li>Hard labeling starts at the end of the gmm loop to check if any data point needs to change their label to fit the current gmm model.</li>
                 </ul>
             </div>
         </div>

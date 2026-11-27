@@ -5,6 +5,8 @@ import math #To get the exact value of pi, log and exp
 from data.clean_data import get_data
 from methods.kmeans import kmeans
 
+#Claude was used to debug the gmm
+
 NUM_OF_VALUES = 4
 MAX_ITERATIONS = 100
 TOLERANCE = 10**-6
