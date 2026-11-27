@@ -75,22 +75,22 @@ def plot_profiles(ax, X, labels, title):
     ax.grid(True, axis="y", alpha=0.3)
 
 
-# calinski-harabasz score of each method
-def plot_scores(ax, scores):
+# score of each method for one metric
+def plot_scores(ax, scores, metric):
     methods = []
     values = []
     for method in scores:
         methods.append(method)
         values.append(scores[method])
 
-    bars = ax.bar(methods, values, color="tab:gray")
-    ax.bar_label(bars, fmt="%.2f")
-    ax.set_ylabel("Calinski-Harabasz index")
-    ax.set_title("Calinski-Harabasz score (higher is better)")
+    bars = ax.bar(methods, values, color=COLORS[:len(methods)])
+    ax.bar_label(bars, fmt="%.3f")
+    ax.set_ylabel(metric)
+    ax.set_title(f"{metric} score (higher is better)")
     ax.grid(True, axis="y", alpha=0.3)
 
 
-# results: {method name: labels}, scores: {method name: score}
+# results: {method name: labels}, scores: {metric name: {method name: score}}
 def plot_results(names, X, results, scores):
     os.makedirs(FIGURES_DIR, exist_ok=True)
     n = len(results)
@@ -113,10 +113,15 @@ def plot_results(names, X, results, scores):
     fig.tight_layout()
     fig.savefig(FIGURES_DIR + "/cluster_profiles.png")
 
-    fig, ax = plt.subplots(figsize=(6, 5))
-    plot_scores(ax, scores)
+    # one bar chart per metric, side by side
+    m = len(scores)
+    fig, axes = plt.subplots(1, m, figsize=(6 * m, 5))
+    col = 0
+    for metric in scores:
+        plot_scores(axes[col], scores[metric], metric)
+        col += 1
     fig.tight_layout()
-    fig.savefig(FIGURES_DIR + "/calinski_harabasz.png")
+    fig.savefig(FIGURES_DIR + "/evaluation_metrics.png")
 
     print("\nSaved figures to figures/")
     plt.show()
