@@ -141,8 +141,8 @@
         <p>k = 3 for the three methods</p>
     </section>
 
-    <!-- Results section -->
-    <section class="results">
+     <!-- Results section -->
+    <section class="card results">
         <h2>Results</h2>
 
         <h3>Choosing k</h3>
@@ -160,19 +160,18 @@
 
         <h3>Evaluation Scores</h3>
         <img class="resultimg" src="images/evaluation_metrics.png" alt="Silhouette and Calinski-Harabasz scores of each method">
-
     </section>
 
-
-     <!-- Discussion section -->
-    <section class="discussion">
+    <!-- Discussion section -->
+    <section class="card discussion">
         <h2>Discussion</h2>
 
         <h3>Comparing the Methods</h3>
         <p>K-Means had the highest Calinski-Harabasz score since the data points in each cluster are tighter and the clusters are better separated than in the other two. 
             Hierarchical had the highest Silhouette score since its data points fit well into their assigned clusters, 
-            with each province being much closer to its own cluster than to the other clusters. GMM scored in between on Calinski-Harabasz but lowest on Silhouette.
-                        Overall, K-Means performed the best since it had the highest Calinski-Harabasz score and was only slightly behind Hierarchical in Silhouette.
+            with each province being much closer to its own cluster than to the other clusters. 
+            GMM scored in between on Calinski-Harabasz but lowest on Silhouette. 
+            Overall, K-Means performed the best since it had the highest Calinski-Harabasz score and was only slightly behind Hierarchical in Silhouette.
         </p>
 
         <h3>Limitations</h3>
@@ -180,7 +179,6 @@
             changed over the years.
         </p>
     </section>
-
 
      <!-- References section -->
     <section class="card">
