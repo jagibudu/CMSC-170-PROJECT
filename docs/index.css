@@ -168,14 +168,20 @@ html {
 /*End of Methods and Evaluation Metrics cards*/
 
 
-/* Results section */
-.results {
+/* Results and discussion sections */
+.results,
+.discussion {
     margin: 40px 0;
     padding: 0 8px;
 }
 
-.results h3 {
+.results h3,
+.discussion h3 {
     margin-top: 28px;
+}
+
+.discussion p {
+    line-height: 1.7;
 }
 
 /* Figures */
