@@ -106,7 +106,7 @@
 
         <h3>Data Split</h3>
         <p>This project does not split the data into training and testing sets. 
-            Clustering is an unsupervised task: there are no correct labels to predict, 
+            Clustering is an unsupervised task, so there are no correct labels to predict, 
             so there is nothing to hold out and test against.
         </p>
 
@@ -138,10 +138,30 @@
         </div>
 
         <h3>Hyperparameters</h3>
-        <p>k = 3 for the two methods</p>
+        <p>k = 3 for the three methods</p>
     </section>
 
+    <!-- Results section -->
+    <section class="results">
+        <h2>Results</h2>
 
+        <h3>Choosing k</h3>
+        <p>We used k = 3 for all three methods since we want to separate the major palay producers, 
+            the major corn producers, and the remaining smaller producers.
+        </p>
+
+        <h3>Clusters</h3>
+        <p>Provinces plotted by palay and corn production, colored by cluster.</p>
+        <img class="resultimg" src="images/clusters_scatter.png" alt="Scatter plots of the clusters of each method">
+
+        <h3>Cluster Profiles</h3>
+        <p>Average yearly production of each crop per cluster.</p>
+        <img class="resultimg" src="images/cluster_profiles.png" alt="Average production of each crop per cluster">
+
+        <h3>Evaluation Scores</h3>
+        <img class="resultimg" src="images/evaluation_metrics.png" alt="Silhouette and Calinski-Harabasz scores of each method">
+
+    </section>
 
 
 

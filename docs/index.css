@@ -168,7 +168,24 @@ html {
 /*End of Methods and Evaluation Metrics cards*/
 
 
+/* Results section */
+.results {
+    margin: 40px 0;
+    padding: 0 8px;
+}
 
+.results h3 {
+    margin-top: 28px;
+}
+
+/* Figures */
+.resultimg {
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    margin: 12px auto 20px;
+    border-radius: 6px;
+}
 
 
 
