@@ -1,6 +1,8 @@
 # GMM Source: https://towardsdatascience.com/gaussian-mixture-models-gmms-from-theory-to-implementation-4406c7fe9847/
 import random
-import numpy as np #Used for matrix multiplication and matrix initialization
+import numpy as np #Used for matrix operations
+import math #To get the exact value of e and pi
+from decimal import Decimal
 from data.clean_data import get_data
 from methods.kmeans import kmeans
 
@@ -41,8 +43,6 @@ def covariance_matrix(X, final_centroids, labels, k):
         mean_vector.append(centroid_probability)
         label_matrix.append(current_matrix)
     return mean_vector, label_matrix
-        
-
 
 def gaussian_mixture_model():
     name, X, features = get_data("data/dataset.csv")
@@ -51,14 +51,58 @@ def gaussian_mixture_model():
 
     # Gather the initial mean vector using final_centroids from kmeans
     final_centroids, labels, count = kmeans(features, initial_centroids)
-    covariance_matrix(X, final_centroids, labels, k)
+
+    # Initialize mean vector and covariance matrix after k-means
+    mean_vector, label_matrix = covariance_matrix(X, final_centroids, labels, k)
+
+    # Find the responsibility
+    expectation_stage(X, final_centroids, mean_vector, label_matrix, k)
     return 
 
 # Set the probabilities of each data point
+def expectation_stage(X, final_centroids, mean_vector, label_matrix, k):
+    # Every final centroid has a fixed set of determinant and inverse
+    # To be used for every responsibility of X
+    determinants = []
+    inverses = []
+    for i in range(0, k):
+        determinants.append(np.linalg.det(label_matrix[i]))
+        inverses.append(np.linalg.inv(label_matrix[i]))
 
-def expectation_stage():
-    return
-
+    data_density = []
+    data_responsibility = []
+    e = math.e
+    pi = math.pi
+    counter = 0
+    for data in X:
+        current_density = []
+        current_responsibility = []
+        
+        for i in range(0, k):
+            smd = 0
+            density_nominator = 0
+            density_denominator = 0
+            for j in range(0, NUM_OF_VALUES):
+                data[j] -= final_centroids[i][j]
+            one_matrix = np.array([data])
+            # Squared Mahanabolis Distance
+            smd = one_matrix @ inverses[i] @ one_matrix.T
+            # Density formula
+            # Probability that X happens on current cluster
+            # Current number is too low without dividing by 10^13
+            density_nominator = Decimal(1 * e ** (-1/2 * smd[0][0] / 10e13))
+            density_denominator = Decimal((2 * pi)**(NUM_OF_VALUES/2) * (determinants[i] ** 1/2))
+            density = float(density_nominator / density_denominator)
+            current_density.append(density)
+            current_responsibility.append(density * mean_vector[i])
+        data_density.append(current_density)
+        data_responsibility.append(current_responsibility)
+        print("Data Point#", counter + 1)
+        print("Densities: ", current_density)
+        print("Responsibilities: ", current_responsibility)
+        counter += 1
+    return data_density, data_responsibility
+        
 # Calculate the likelihood that a data point exists with a particular cluster
 def maximization_stage():
     return
