@@ -287,3 +287,246 @@ Values represent annual total production (sum of 4 quarters) in **Metric Tons (M
 
 ---
 
+## 5. Clustering Methods
+
+We implemented three clustering algorithms from scratch to compare how different approaches group Philippine provinces based on their Palay and Corn production characteristics.
+
+### 5.1 K-Means Clustering
+
+K-Means is a partition-based clustering algorithm that groups data points according to their proximity to cluster centroids. Each province is assigned to the cluster with the nearest centroid using Euclidean distance. The centroids are then updated by calculating the mean of the features of all provinces assigned to each cluster. This process repeats until the assignments or centroids converge.
+
+### 5.2 Hierarchical Clustering
+
+We implemented agglomerative hierarchical clustering using average linkage. Initially, each province is treated as an individual cluster. The algorithm repeatedly merges the two clusters with the smallest average pairwise distance until the desired number of clusters is reached.
+
+Average linkage calculates the distance between two clusters based on the average distance between all pairs of data points from the two clusters.
+
+### 5.3 Gaussian Mixture Model (GMM)
+
+Gaussian Mixture Model is a probabilistic clustering algorithm that represents the data as a mixture of Gaussian distributions. Unlike K-Means, GMM assigns probabilities indicating how likely a province belongs to each cluster.
+
+Our implementation uses K-Means to initialize the GMM parameters, including the initial means, weights, and covariance matrices. It then performs the Expectation-Maximization (EM) algorithm to iteratively estimate the responsibilities and update the parameters until convergence or the maximum number of iterations is reached. The final cluster assignment is based on the component with the highest responsibility.
+
+---
+
+## 6. Experimental Setup
+
+To ensure a fair comparison, all three clustering algorithms used the same dataset, features, and standardized input.
+
+| Parameter | Description |
+|---|---|
+| Dataset | Philippine Palay and Corn Production Data |
+| Coverage | 1990–2025 |
+| Samples | 82 provinces |
+| Features | 4 crop production features |
+| Features used | Irrigated Palay, Rainfed Palay, White Corn, Yellow Corn |
+| Preprocessing | Annual averaging and Z-score standardization |
+| Number of clusters (K) | 3 |
+| Distance measure | Euclidean distance |
+| Hierarchical linkage | Average linkage |
+| K-Means random seed | 10 |
+| GMM initialization | K-Means initialization |
+| GMM maximum iterations | 100 |
+| GMM tolerance | 0.000001 |
+
+The four features represent the annual average production of each crop in tons. Production values were averaged over the selected period from 1990 to 2025 to represent the general production characteristics of each province.
+
+The data were standardized using Z-score standardization before clustering. This helps prevent differences in the magnitude of crop production values from disproportionately influencing the clustering process.
+
+Since the project uses unsupervised learning, no train-test split was performed. The algorithms were applied to the same standardized dataset to compare their resulting cluster structures.
+
+---
+
+## 7. Evaluation Metrics
+
+To evaluate and compare the quality of the clusters produced by the three algorithms, we implemented two internal evaluation metrics: Silhouette Score and Calinski-Harabasz Index.
+
+### 7.1 Silhouette Score
+
+The Silhouette Score measures how well each data point fits within its assigned cluster compared to other clusters.
+
+For each sample:
+
+- **a(i)** is the average distance between the sample and other points within its own cluster.
+- **b(i)** is the lowest average distance between the sample and points belonging to another cluster.
+
+The silhouette value is calculated as:
+
+\[
+s(i)=\frac{b(i)-a(i)}{\max(a(i),b(i))}
+\]
+
+The overall Silhouette Score is the average of the silhouette values of all samples.
+
+The score ranges from -1 to 1:
+
+- A value close to **1** indicates that the sample is well matched to its cluster.
+- A value close to **0** indicates that the sample is near a cluster boundary.
+- A value close to **-1** indicates that the sample may be assigned to the wrong cluster.
+
+A higher Silhouette Score generally indicates better-defined and more separated clusters.
+
+### 7.2 Calinski-Harabasz Index
+
+The Calinski-Harabasz (CH) Index evaluates clustering quality by comparing the separation between clusters with the compactness within clusters.
+
+It is calculated using the ratio of between-cluster dispersion to within-cluster dispersion, adjusted according to the number of clusters and samples.
+
+A higher Calinski-Harabasz Index indicates that clusters are relatively compact and well separated from one another.
+
+### 7.3 Why We Used Both Metrics
+
+We used both metrics because they evaluate clustering quality from different perspectives.
+
+The Silhouette Score measures how well individual samples fit within their clusters compared to neighboring clusters, while the Calinski-Harabasz Index evaluates the overall separation and compactness of the clusters.
+
+Using both provides a more balanced evaluation instead of relying on only one metric to determine clustering performance.
+
+---
+
+## 8. Results
+
+The three clustering algorithms generated different groupings of provinces based on their Palay and Corn production characteristics.
+
+The resulting clusters generally reflect differences in production characteristics, including provinces with major Palay production, provinces with major Corn production, and provinces with relatively smaller or moderate production levels.
+
+The results were examined using cluster visualizations, crop production profiles, cluster distributions, and internal evaluation metrics.
+
+### 8.1 K-Means Results
+
+K-Means produced clusters based on the proximity of provinces to their respective centroids. Its resulting groupings showed production similarities among provinces based on the four standardized crop features.
+
+### 8.2 Hierarchical Clustering Results
+
+Hierarchical clustering generated groups through successive merging of the closest clusters using average linkage. Its results provided a different grouping structure compared with K-Means and GMM.
+
+### 8.3 Gaussian Mixture Model Results
+
+GMM generated clusters based on probabilistic membership to Gaussian components. Its results reflect the probability-based grouping of provinces according to their production characteristics.
+
+---
+
+## 9. Comparison of Clustering Methods
+
+The clustering algorithms were compared using the Silhouette Score and Calinski-Harabasz Index.
+
+Based on the evaluation results:
+
+- **K-Means** obtained the highest Calinski-Harabasz Index, indicating stronger cluster compactness and separation based on this metric.
+- **Hierarchical Clustering** obtained the highest Silhouette Score, indicating better-defined clusters based on the average relationship between within-cluster and nearest-other-cluster distances.
+- **GMM** obtained an intermediate Calinski-Harabasz result but the lowest Silhouette Score among the three methods.
+
+Overall, K-Means was considered the strongest method based on the Calinski-Harabasz Index, while its Silhouette Score was relatively close to that of Hierarchical Clustering.
+
+These findings demonstrate that different clustering algorithms can produce different results depending on how they define and form clusters. No single metric completely captures clustering quality, which is why both evaluation measures were considered.
+
+---
+
+## 10. Discussion and Limitations
+
+The clustering results demonstrate that Philippine provinces can be grouped according to similarities in their historical Palay and Corn production characteristics. The three algorithms provide different perspectives on these similarities due to their distinct clustering mechanisms.
+
+However, the study has several limitations.
+
+First, averaging production data across the selected years reduces the dataset to general production characteristics. This may hide seasonal patterns, fluctuations, growth, decline, and changes in production over time.
+
+Second, the study only considers four crop features: Irrigated Palay, Rainfed Palay, White Corn, and Yellow Corn. Other agricultural factors, such as land area, weather conditions, soil characteristics, and farming practices, are not included.
+
+Third, the project uses internal clustering metrics. Although Silhouette Score and Calinski-Harabasz Index help evaluate cluster structure, they do not establish that the resulting groups represent all real-world agricultural conditions or that the groupings directly explain agricultural productivity.
+
+Therefore, the results should be interpreted as an exploratory analysis of production similarities rather than definitive classifications of agricultural provinces.
+
+---
+
+## 11. Conclusion
+
+This project explored the clustering of Philippine provinces based on their historical Palay and Corn production data from 1990 to 2025. Using four crop production features and three clustering algorithms—K-Means, Hierarchical Clustering, and Gaussian Mixture Model—we examined how provinces can be grouped according to similarities in their production characteristics.
+
+The results showed that the clustering methods produced different groupings and performed differently based on the selected evaluation metrics. K-Means obtained the highest Calinski-Harabasz Index, while Hierarchical Clustering achieved the highest Silhouette Score.
+
+Through this project, we demonstrated the implementation and comparison of clustering algorithms from scratch and highlighted the importance of preprocessing, feature selection, and evaluation metrics in unsupervised learning.
+
+---
+
+## 12. How to Run
+
+### Requirements
+
+- Python 3.x
+- NumPy
+- Matplotlib (if running visualizations)
+
+### Setup
+
+Clone the repository:
+
+```bash
+git clone https://github.com/jagibudu/CMSC-170-PROJECT.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd CMSC-170-PROJECT
+```
+
+Install the required dependency:
+
+```bash
+pip install numpy
+```
+
+Ensure that the dataset is located in the `data/` directory and named `dataset.csv`.
+
+> **Note:** Run commands depend on the project's actual entry-point files. Use the appropriate main or runner script to execute the clustering algorithms and evaluation. Refer to the project's source files for the corresponding execution functions.
+
+---
+
+## 13. Reproducing Results
+
+To reproduce the clustering results, the same dataset and preprocessing pipeline must be used across all three algorithms.
+
+The preprocessing pipeline performs the following steps:
+
+1. Load the Philippine Palay and Corn production dataset.
+2. Select the four crop production features.
+3. Process the records at the province level.
+4. Handle regional changes and combine Negros-related records where necessary.
+5. Exclude provinces with incomplete feature data.
+6. Calculate annual average production values for the selected period.
+7. Standardize the features using Z-score standardization.
+8. Apply the clustering algorithms using three clusters (K = 3).
+9. Evaluate the resulting clusters using Silhouette Score and Calinski-Harabasz Index.
+
+For reproducibility, the K-Means initialization uses a random seed of 10. GMM is initialized using K-Means and uses a maximum of 100 iterations with a convergence tolerance of 0.000001.
+
+All clustering algorithms use the same standardized feature matrix to ensure a consistent basis for comparison.
+
+---
+
+## 14. Team Contributions
+
+| Member | Contribution |
+|---|---|
+| **Jason Gian B. Duran** | Data preprocessing, plotting and visualization, and PowerPoint presentation |
+| **Kevin Aaron A. Salazar** | Project pages, K-Means implementation, and Calinski-Harabasz Index |
+| **Ron Kirby M. Arches** | Milestone reporting and Gaussian Mixture Model implementation |
+| **Carlos James R. Miranda** | Hierarchical Clustering implementation, Silhouette Score, and README documentation |
+
+Although tasks were divided among members, the group collaboratively participated in brainstorming, troubleshooting, discussions, evaluation, and the completion of the project deliverables.
+
+---
+
+## 15. References and AI Disclosure
+
+### Dataset Source
+
+Philippine Statistics Authority (PSA) – OpenStat
+
+The dataset contains historical Philippine Palay and Corn production records used for the project's data preprocessing and clustering analysis.
+
+### AI Tool Disclosure
+
+AI tools, including Claude, were used as assistance during development for code troubleshooting, explanations, and selected programming-related tasks.
+
+All generated suggestions and code were reviewed, tested, modified, and integrated by the group. The group is responsible for understanding the implemented algorithms, code, experimental procedures, evaluation, and reported findings.
