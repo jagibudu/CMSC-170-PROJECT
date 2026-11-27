@@ -289,7 +289,7 @@ Values represent annual total production (sum of 4 quarters) in **Metric Tons (M
 
 ## 5. Clustering Methods
 
-We implemented three clustering algorithms from scratch to compare how different approaches group Philippine provinces based on their Palay and Corn production characteristics.
+Implemented three clustering algorithms to compare how different approaches group Philippine provinces based on their Palay and Corn production characteristics.
 
 ### 5.1 K-Means Clustering
 
@@ -297,7 +297,7 @@ K-Means is a partition-based clustering algorithm that groups data points accord
 
 ### 5.2 Hierarchical Clustering
 
-We implemented agglomerative hierarchical clustering using average linkage. Initially, each province is treated as an individual cluster. The algorithm repeatedly merges the two clusters with the smallest average pairwise distance until the desired number of clusters is reached.
+Implemented agglomerative hierarchical clustering using average linkage. Initially, each province is treated as an individual cluster. The algorithm repeatedly merges the two clusters with the smallest average pairwise distance until the desired number of clusters is reached.
 
 Average linkage calculates the distance between two clusters based on the average distance between all pairs of data points from the two clusters.
 
