@@ -168,30 +168,24 @@ html {
 /*End of Methods and Evaluation Metrics cards*/
 
 
-/* Results and discussion sections */
-.results,
-.discussion {
-    margin: 40px 0;
-    padding: 0 8px;
-}
+/*Results section*/
+    .results .resultimg {
+        display: block;
+        width: 100%;
+        margin: 12px 0 20px 0;
+        background-color: #faf7ef;
+        border: 1px solid #ece6d6;
+        border-radius: 12px;
+        padding: 12px;
+        box-sizing: border-box;
+    }
+/*End of Results section*/
 
-.results h3,
-.discussion h3 {
-    margin-top: 28px;
-}
-
-.discussion p {
-    line-height: 1.7;
-}
-
-/* Figures */
-.resultimg {
-    display: block;
-    width: 100%;
-    max-width: 900px;
-    margin: 12px auto 20px;
-    border-radius: 6px;
-}
+/*Discussion section*/
+    .discussion p {
+        margin: 8px 0 16px 0;
+    }
+/*End of Discussion section*/
 
 
 
