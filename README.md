@@ -352,9 +352,9 @@ For each sample:
 
 The silhouette value is calculated as:
 
-\[
-s(i)=\frac{b(i)-a(i)}{\max(a(i),b(i))}
-\]
+$$
+s(i) = \frac{b(i) - a(i)}{\max(a(i), b(i))}
+$$
 
 The overall Silhouette Score is the average of the silhouette values of all samples.
 
